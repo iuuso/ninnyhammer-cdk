@@ -6,7 +6,7 @@ import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
 /**
  * The stack that defines the application pipeline
  */
-export class CdkpipelinesDemoPipelineStack extends Stack {
+export class NinnyhammerPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
@@ -15,7 +15,7 @@ export class CdkpipelinesDemoPipelineStack extends Stack {
  
     const pipeline = new CdkPipeline(this, 'Pipeline', {
       // The pipeline name
-      pipelineName: 'MyServicePipeline',
+      pipelineName: 'Ninnyhammer',
       cloudAssemblyArtifact,
 
       // Where the source can be found
