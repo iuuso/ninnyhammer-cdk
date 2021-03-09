@@ -1,5 +1,7 @@
 # Ninnyhammer
 
+This is the repo that I should be working on! Let's do this now for god sakes.
+
 ### M
 
 # Welcome to your CDK TypeScript project!
