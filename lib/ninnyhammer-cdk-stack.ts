@@ -1,7 +1,7 @@
 import * as s3 from '@aws-cdk/aws-s3';
 import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
 
-export class NinnyhammerCdkStack extends Stack {
+export class NinnyhammerWebLayer extends Stack {
  
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
