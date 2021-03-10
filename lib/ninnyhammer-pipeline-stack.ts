@@ -30,6 +30,7 @@ export class NinnyhammerPipelineStack extends Stack {
          cloudAssemblyArtifact,
          
          // We need a build step to compile the TypeScript Lambda
+         installCommand: 'npm install -g aws-cdk && npm i',
          buildCommand: 'npm install && npm run build'
        }),
     });
