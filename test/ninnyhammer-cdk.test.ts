@@ -2,6 +2,8 @@ import { expect as expectCDK, matchTemplate, MatchStyle, SynthUtils } from '@aws
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as NinnyhammerCdk from '../lib/ninnyhammer-cdk-stack';
+import { WebLayerStack } from '../lib/ninnyhammer-cdk-stack'; 
+import '@aws-cdk/assert/jest';
 
 // test('Empty Stack', () => {
 //     const app = new cdk.App();
@@ -13,13 +15,13 @@ import * as NinnyhammerCdk from '../lib/ninnyhammer-cdk-stack';
 //     }, MatchStyle.EXACT))
 // });
 
-// test('bucket with the name ninnyhammer-web-bucket', () => {
-//   const app = new cdk.App();
-//   const stack = new NinnyhammerCdk.NinnyhammerWebLayer(app, 'MyTestStack');
-//   expect(stack).toHaveResource('AWS::S3::Bucket', {
-//     bucketname: 'ninnyhammer-content-bucket',
-//   });
-// });
+test('bucket with the name ninnyhammer-web-bucket', () => {
+  const app = new cdk.App();
+  const stack = new WebLayerStack(app, 'MyTestStack');
+  expect(stack).toHaveResource('AWS::S3::Bucket', {
+    bucketname: 'ninnyhammer-content-bucket',
+  });
+});
 //   expect(() => {
 //     new 
 //     bucketName: 'ninnyhammer-web-bucket',
