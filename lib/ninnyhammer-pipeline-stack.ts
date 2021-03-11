@@ -1,13 +1,26 @@
+import * as cdk from '@aws-cdk/core';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
-import { env } from 'node:process';
 
-import { NinnyhammerWebLayer } from './ninnyhammer-cdk-stack';
+import { WebLayerStack } from './ninnyhammer-cdk-stack';
 
-export class NinnyhammerPipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+
+export class WebLayerStage extends cdk.Stage {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
+    super(scope, id, props);
+
+    const weblayer = new WebLayerStack(this, 'WebLayer', {
+      env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION,
+      },
+    });
+  }
+}
+
+export class NinnyhammerPipelineStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const sourceArtifact = new codepipeline.Artifact();
@@ -22,7 +35,7 @@ export class NinnyhammerPipelineStack extends Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken: SecretValue.secretsManager('github-token'),
+        oauthToken: cdk.SecretValue.secretsManager('github-token'),
         owner: 'iuuso',
         repo: 'ninnyhammer-cdk',
       }),
@@ -39,7 +52,7 @@ export class NinnyhammerPipelineStack extends Stack {
     });
 
     // This is where we add the application stages
-    pipeline.addApplicationStage(new NinnyhammerWebLayer(this, 'Prod', {
+    pipeline.addApplicationStage(new WebLayerStage(this, 'Prod', {
       env: {
         account: process.env.CDK_DEFAULT_ACCOUNT,
         region: process.env.CDK_DEFAULT_REGION,
