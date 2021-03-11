@@ -2,6 +2,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+import { env } from 'node:process';
 
 import { NinnyhammerWebLayer } from './ninnyhammer-cdk-stack';
 
@@ -38,6 +39,11 @@ export class NinnyhammerPipelineStack extends Stack {
     });
 
     // This is where we add the application stages
-    new NinnyhammerWebLayer(this, "NinnyhammerWebLayer", props);
+    pipeline.addApplicationStage(new NinnyhammerWebLayer(this, 'Prod', {
+      env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION,
+      }
+    }))
   }
 }

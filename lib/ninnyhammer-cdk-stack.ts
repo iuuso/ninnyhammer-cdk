@@ -1,14 +1,16 @@
 import * as s3 from '@aws-cdk/aws-s3';
-import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
+import { CfnOutput, Construct, Stage, StackProps } from '@aws-cdk/core';
 
-export class NinnyhammerWebLayer extends Stack {
+export class NinnyhammerWebLayer extends Stage {
  
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const ninnyhammerBucket = new s3.Bucket(this, 'NinnyhammerBucket', {
-      bucketName: 'NinnyhammerBucket',
+      bucketName: 'ninnyhammer-web-bucket',
     });
+
+
 
 
 
