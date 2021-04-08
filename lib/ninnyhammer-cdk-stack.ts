@@ -2,6 +2,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import { CfnOutput, Construct, Stage, Stack, StageProps, StackProps } from '@aws-cdk/core';
+import { SecurityPolicyProtocol } from '@aws-cdk/aws-cloudfront';
 
 export class WebLayerStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -11,10 +12,12 @@ export class WebLayerStack extends Stack {
       bucketName: 'ninnyhammer-web-bucket',
     });
 
-    new cloudfront.Distribution(this, 'NinnyhammerCF', {
+    const cfDistribution = new cloudfront.Distribution(this, 'NinnyhammerCF', {
       defaultBehavior: {
         origin: new origins.S3Origin(webbucket)
       },
+      minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2019,
+      domainNames: ['juusokarlstrom.com'],
     });
 };
 }
