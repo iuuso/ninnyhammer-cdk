@@ -1,7 +1,9 @@
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { CfnOutput, Construct, Stage, Stack, StageProps, StackProps } from '@aws-cdk/core';
+import * as acm from '@aws-cdk/aws-certificatemanager';
+
+import { CfnOutput, Construct, Stage, Stack, StageProps, StackProps, RemovalPolicy } from '@aws-cdk/core';
 import { SecurityPolicyProtocol } from '@aws-cdk/aws-cloudfront';
 
 export class WebLayerStack extends Stack {
@@ -10,14 +12,30 @@ export class WebLayerStack extends Stack {
     
     const webbucket = new s3.Bucket(this, 'NinnyhammerBucket', {
       bucketName: 'ninnyhammer-web-bucket',
+      websiteIndexDocument: 'index.html',
+      websiteErrorDocument: 'error.html',
+      cors: [
+        {
+          allowedMethods: [ s3.HttpMethods.GET, s3.HttpMethods.HEAD ],
+          allowedOrigins: [ '*' ],
+        },
+      ],
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
+    const certificate = new acm.DnsValidatedCertificate(this, 'NinnyHammerCert', {
+      domainName: 'juusokarlstrom.com',
+      hostedZone,
+    });
+
+    // CloudFront Distribution for the S3 origin bucket.
     const cfDistribution = new cloudfront.Distribution(this, 'NinnyhammerCF', {
       defaultBehavior: {
         origin: new origins.S3Origin(webbucket)
       },
       minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2019,
       domainNames: ['juusokarlstrom.com'],
+      certificate: certificate,
     });
 };
 }
