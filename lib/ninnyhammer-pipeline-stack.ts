@@ -53,7 +53,7 @@ export class NinnyhammerPipelineStack extends cdk.Stack {
        }),
     });
 
-    pipeline.addStage('S3-deploy').addActions();
+    // pipeline.addStage('S3-deploy').addActions();
 
 
     // This is where we add the application stages
