@@ -36,6 +36,7 @@ export class WebLayerStack extends Stack {
     const certificate = new acm.DnsValidatedCertificate(this, 'NinnyHammerCert', {
       domainName: domain,
       hostedZone,
+      region: 'us-east-1',
     });
 
     // CloudFront Distribution for the S3 origin bucket.
