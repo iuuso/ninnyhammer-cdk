@@ -19,6 +19,8 @@ export class WebLayerStage extends cdk.Stage {
   }
 }
 
+
+
 export class NinnyhammerPipelineStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -50,6 +52,9 @@ export class NinnyhammerPipelineStack extends cdk.Stack {
          buildCommand: 'npm install && npm run build'
        }),
     });
+
+    pipeline.addStage('S3-deploy').addActions();
+
 
     // This is where we add the application stages
     pipeline.addApplicationStage(new WebLayerStage(this, 'Prod', {
