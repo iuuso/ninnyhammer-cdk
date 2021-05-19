@@ -3,8 +3,11 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 
+import { HostedZone } from '@aws-cdk/aws-route53';
 import { CfnOutput, Construct, Stage, Stack, StageProps, StackProps, RemovalPolicy } from '@aws-cdk/core';
 import { SecurityPolicyProtocol } from '@aws-cdk/aws-cloudfront';
+
+const domain = 'juusokarlstrom.com';
 
 export class WebLayerStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -23,8 +26,9 @@ export class WebLayerStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
+    const hostedZone = new HostedZone(this, 'hostedZone', { zoneName: domain });
     const certificate = new acm.DnsValidatedCertificate(this, 'NinnyHammerCert', {
-      domainName: 'juusokarlstrom.com',
+      domainName: domain,
       hostedZone,
     });
 
@@ -34,7 +38,7 @@ export class WebLayerStack extends Stack {
         origin: new origins.S3Origin(webbucket)
       },
       minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2019,
-      domainNames: ['juusokarlstrom.com'],
+      domainNames: [ domain ],
       certificate: certificate,
     });
 };
