@@ -2,6 +2,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as s3_deployment from '@aws-cdk/aws-s3-deployment';
 
 import { HostedZone } from '@aws-cdk/aws-route53';
 import { CfnOutput, Construct, Stage, Stack, StageProps, StackProps, RemovalPolicy } from '@aws-cdk/core';
@@ -25,6 +26,11 @@ export class WebLayerStack extends Stack {
       ],
       removalPolicy: RemovalPolicy.DESTROY,
     });
+
+    new s3_deployment.BucketDeployment(this, 's3_deployment', {
+      sources: [ s3_deployment.Source.asset('app/') ],
+      destinationBucket: webbucket,
+    })
 
     const hostedZone = new HostedZone(this, 'hostedZone', { zoneName: domain });
     const certificate = new acm.DnsValidatedCertificate(this, 'NinnyHammerCert', {
