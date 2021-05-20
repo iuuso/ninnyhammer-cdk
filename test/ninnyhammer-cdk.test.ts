@@ -19,7 +19,7 @@ test('bucket with the name ninnyhammer-web-bucket', () => {
   const app = new cdk.App();
   const stack = new WebLayerStack(app, 'MyTestStack');
   expect(stack).toHaveResource('AWS::S3::Bucket', {
-    bucketname: 'ninnyhammer-content-bucket',
+    BucketName: 'ninnyhammer-web-bucket',
   });
 });
 //   expect(() => {
