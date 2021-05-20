@@ -1,8 +1,8 @@
 import { expect as expectCDK, matchTemplate, MatchStyle, SynthUtils } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as NinnyhammerCdk from '../lib/ninnyhammer-cdk-stack';
-import { WebLayerStack } from '../lib/ninnyhammer-cdk-stack'; 
+import * as NinnyhammerCdk from '../lib/infra-stack';
+import { WebLayerStack } from '../lib/infra-stack'; 
 import '@aws-cdk/assert/jest';
 
 // test('Empty Stack', () => {

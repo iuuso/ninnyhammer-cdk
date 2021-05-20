@@ -3,7 +3,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
 
-import { WebLayerStack } from './ninnyhammer-cdk-stack';
+import { WebLayerStack } from './infra-stack';
 
 
 export class WebLayerStage extends cdk.Stage {
